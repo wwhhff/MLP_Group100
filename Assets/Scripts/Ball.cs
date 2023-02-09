@@ -18,7 +18,7 @@ public class Ball : MonoBehaviour
     {
         if (collision.collider.CompareTag("wall"))
         {
-            carAgent.AddReward(-10);
+            //carAgent.AddReward(-10);
             carAgent.EndEpisode();
         }
     }

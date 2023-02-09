@@ -1,5 +1,53 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1296854848355081950
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7636665826287428497}
+  - component: {fileID: 6006411938479566071}
+  m_Layer: 9
+  m_Name: Lidar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7636665826287428497
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296854848355081950}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6540195963144287050}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6006411938479566071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296854848355081950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52237b7b6455b6e42942f0328c80e21b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  low_angle: -60
+  high_angle: 60
+  rays: 7
+  max_distance: 200
 --- !u!1 &4716592838762134517
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,7 +490,7 @@ GameObject:
   - component: {fileID: 4716592839315836159}
   - component: {fileID: 4716592839315836146}
   - component: {fileID: 4716592839315836147}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: ball
   m_Icon: {fileID: 0}
@@ -541,7 +589,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!114 &4716592839315836147
 MonoBehaviour:
@@ -5477,7 +5525,7 @@ GameObject:
   - component: {fileID: 4716592840436570048}
   - component: {fileID: 4716592840436570063}
   - component: {fileID: 4716592840436570062}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cylinder
   m_TagString: zone
   m_Icon: {fileID: 0}
@@ -5582,6 +5630,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Car02 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1992687495682337863, guid: 72d737a2f7845f74188b2d7850b97ec2, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1997282255436132124, guid: 72d737a2f7845f74188b2d7850b97ec2, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -5672,12 +5724,13 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
+  MaxStep: 5000
   wheelVehicle: {fileID: 6576868317375420866}
   rb: {fileID: 6515620389324896966}
   ball: {fileID: 4716592839315836158}
   ball_rb: {fileID: 4716592839315836146}
   zone: {fileID: 4716592840436570061}
+  lidar: {fileID: 6006411938479566071}
 --- !u!114 &4716592839555718191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5691,7 +5744,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 5
+    VectorObservationSize: 14
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 2
