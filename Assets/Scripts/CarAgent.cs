@@ -17,6 +17,7 @@ public class CarAgent : Agent
     public Transform zone;
 
     public Lidar lidar;
+    public Lidar lidar_rear;
 
     public override void OnEpisodeBegin()
     {
@@ -25,7 +26,7 @@ public class CarAgent : Agent
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
-        Vector3 ballpos = new Vector3(Random.Range(-30.0f, 30.0f), 1.5f, Random.Range(-30.0f, 30.0f));
+        Vector3 ballpos = new Vector3(Random.Range(-30.0f, 30.0f), 5f, Random.Range(-30.0f, 30.0f));
         ball.transform.localPosition = ballpos;
         ball_rb.velocity = Vector3.zero;
         ball_rb.angularVelocity = Vector3.zero;
@@ -52,6 +53,11 @@ public class CarAgent : Agent
         {
             sensor.AddObservation(lidar.hits[i].distance);
         }
+
+        for (int i = 0; i < lidar_rear.rays; i++)
+        {
+            sensor.AddObservation(lidar_rear.hits[i].distance);
+        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -66,17 +72,23 @@ public class CarAgent : Agent
         wheelVehicle.throttle = actions.ContinuousActions[0];
         wheelVehicle.steeringInput = actions.ContinuousActions[1];
 
-        if (rb.velocity.magnitude < 0.1f)
-        {
-            AddReward(-rb.velocity.magnitude * 0.01f);
-        }
+        //if (rb.velocity.magnitude < 1f)
+        //{
+        //    AddReward(-0.01f);
+        //}
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("ball"))
         {
-            AddReward(3f);
+            //AddReward(5f);
+        }
+
+        if (collision.collider.CompareTag("wall"))
+        {
+            AddReward(-5f);
+            EndEpisode();
         }
     }
 }
