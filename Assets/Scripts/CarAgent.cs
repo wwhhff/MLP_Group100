@@ -32,7 +32,7 @@ public class CarAgent : Agent
         ball_rb.angularVelocity = Vector3.zero;
 
         Vector3 zonepos = new Vector3(Random.Range(-30.0f, 30.0f), 0, Random.Range(-30.0f, 30.0f));
-        while(Vector3.Distance(ballpos, zonepos) < 10.0f)
+        while(Vector3.Distance(ballpos, zonepos) < 20.0f)
         {
             zonepos = new Vector3(Random.Range(-30.0f, 30.0f), 0, Random.Range(-30.0f, 30.0f));
         }
