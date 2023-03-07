@@ -19,6 +19,8 @@ public class CarAgent : Agent
     public Lidar lidar;
     public Lidar lidar_rear;
 
+    bool collision_rewarded = false;
+
     public override void OnEpisodeBegin()
     {
         transform.localPosition = new Vector3(Random.Range(-30.0f, 30.0f), 0, Random.Range(-30.0f, 30.0f));
@@ -39,26 +41,26 @@ public class CarAgent : Agent
         zone.transform.localPosition = zonepos;
     }
 
-    public override void CollectObservations(VectorSensor sensor)
-    {
-        sensor.AddObservation(transform.localPosition.x);
-        sensor.AddObservation(transform.localPosition.z);
-        sensor.AddObservation(transform.InverseTransformDirection(rb.velocity).z);
-        sensor.AddObservation(transform.InverseTransformPoint(ball.position).x);
-        sensor.AddObservation(transform.InverseTransformPoint(ball.position).z);
-        sensor.AddObservation(transform.InverseTransformPoint(zone.position).x);
-        sensor.AddObservation(transform.InverseTransformPoint(zone.position).z);
+    //public override void CollectObservations(VectorSensor sensor) //21 observations
+    //{
+    //    sensor.AddObservation(transform.localPosition.x);
+    //    sensor.AddObservation(transform.localPosition.z);
+    //    sensor.AddObservation(transform.InverseTransformDirection(rb.velocity).z);
+    //    sensor.AddObservation(transform.InverseTransformPoint(ball.position).x);
+    //    sensor.AddObservation(transform.InverseTransformPoint(ball.position).z);
+    //    sensor.AddObservation(transform.InverseTransformPoint(zone.position).x);
+    //    sensor.AddObservation(transform.InverseTransformPoint(zone.position).z);
 
-        for (int i = 0; i < lidar.rays; i++)
-        {
-            sensor.AddObservation(lidar.hits[i].distance);
-        }
+    //    for (int i = 0; i < lidar.rays; i++)
+    //    {
+    //        sensor.AddObservation(lidar.hits[i].distance);
+    //    }
 
-        for (int i = 0; i < lidar_rear.rays; i++)
-        {
-            sensor.AddObservation(lidar_rear.hits[i].distance);
-        }
-    }
+    //    for (int i = 0; i < lidar_rear.rays; i++)
+    //    {
+    //        sensor.AddObservation(lidar_rear.hits[i].distance);
+    //    }
+    //}
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
@@ -72,17 +74,23 @@ public class CarAgent : Agent
         wheelVehicle.throttle = actions.ContinuousActions[0];
         wheelVehicle.steeringInput = actions.ContinuousActions[1];
 
-        //if (rb.velocity.magnitude < 1f)
-        //{
-        //    AddReward(-0.01f);
-        //}
+        if (rb.velocity.magnitude < 3f)
+        {
+            AddReward(-0.01f * Time.deltaTime);
+        }
+
+        AddReward(-0.01f * Time.deltaTime);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("ball"))
         {
-            //AddReward(5f);
+            if (!collision_rewarded)
+            {
+                AddReward(20f);
+                collision_rewarded = true;
+            }
         }
 
         if (collision.collider.CompareTag("wall"))

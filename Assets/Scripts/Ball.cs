@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour
     {
         if (other.CompareTag("zone"))
         {
-            carAgent.AddReward(100);
+            carAgent.AddReward(20);
             carAgent.EndEpisode();
         }
     }
